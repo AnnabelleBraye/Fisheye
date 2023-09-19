@@ -21,6 +21,7 @@ function createDropdown(dropdownOptions) {
   sortButton.role = "listbox";
   sortButton.ariaHasPopup = true;
   sortButton.ariaExpanded = false;
+  sortButton.ariaRoleDescription = "Trier par";
   sortButton.classList.add("sort_btn");
   dropdownContainer.appendChild(sortButton);
 
@@ -76,6 +77,7 @@ function createSortButton(dropdownOptions) {
 function createOption(opt) {
   const optContainer = document.createElement("div");
   optContainer.classList.add("dropdown_option_container");
+
   const option = document.createElement("span");
   option.dataset.value = opt.value;
   option.textContent = opt.text;
@@ -151,12 +153,10 @@ function selectOpt(value, text) {
  * @returns new sorted list
  */
 function sortMedias(property) {
-  console.log(`property`, property);
   return mediasSorted.sort((a, b) => {
     if (property === "likes") {
       return b[property] - a[property];
     }
-    console.log(`a et b`, a, b);
     return a[property].localeCompare(b[property]);
   });
 }
@@ -243,7 +243,7 @@ function handleKeydownOnDropdown(e) {
     closeDropdown();
   } else if (e.key === "Enter") {
     if (!dropdownElt.classList.contains("hidden")) {
-      const opt = e.currentTarget.querySelector(".dropdown_option");
+      const opt = document.activeElement.querySelector(".dropdown_option");
       selectOpt(opt.dataset.value, opt.textContent);
       dropdownContainer.removeEventListener("keydown", handleKeydownOnDropdown);
     }
