@@ -3,8 +3,6 @@ function mediaTemplate(media, photographer, mediasList) {
   let currentIndex = -1;
   // lightbox is opened or not
   let isLightboxOpened = false;
-  // Check if keydown came from body
-  let fromBody = true;
   let focusableLightboxElts = null;
 
   let mediaSrc = getMediaSrc(media, photographer);
@@ -300,7 +298,11 @@ function mediaTemplate(media, photographer, mediasList) {
       document.querySelector(`img[src='${mediaSrc}'`) ??
       document.querySelector(`video[src='${mediaSrc}']`);
     selectedMedia.removeEventListener("keydown", openOnEnter);
-    lightboxModal.addEventListener("keydown", handleKeydown);
+    focusableLightboxElts = document.getElementById("close-icon-container");
+    focusableLightboxElts = focusableLightboxElts.concat(
+      document.querySelectorAll("#previous, #next")
+    );
+    trapFocusInLightbox();
     showMedia(media);
     const closeIcon = document.getElementById("close-icon-container");
     closeIcon.focus();
@@ -316,15 +318,23 @@ function mediaTemplate(media, photographer, mediasList) {
 
     lightboxModal.removeEventListener("keydown", handleKeydown);
 
-    fromBody = true;
     // On close, on redonne le focus à l'image liée au currentIndex
     const selectedMedia = document.querySelector(`img[src='${mediaSrc}'`);
     selectedMedia.addEventListener("keydown", openOnEnter);
     selectedMedia.focus();
   }
 
+  function trapFocusInLightbox() {
+    lightboxModal.addEventListener("keydown", handleKeydown);
+  }
+
+  /**
+   * Handle keydown
+   */
   function handleKeydown(e) {
     const keyCode = e.key;
+    const firstFocusableElt = focusableLightboxElts[0];
+    const lastFocusableElt = focusableLightboxElts[2];
 
     if (
       keyCode === "Escape" ||
@@ -333,19 +343,24 @@ function mediaTemplate(media, photographer, mediasList) {
     ) {
       closeLightbox();
       e.preventDefault();
-    } else if (e.key === "Enter") {
-      e.preventDefault();
-      if (document.activeElement.id === "previous") {
-        showPreviousMedia();
-      } else if (document.activeElement.id === "next") {
-        showNextMedia();
-      }
     } else if (keyCode === "ArrowLeft") {
       showPreviousMedia();
       e.preventDefault();
     } else if (keyCode === "ArrowRight") {
       showNextMedia();
       e.preventDefault();
+    } else if (keyCode === "Tab") {
+      if (e.shiftKey) {
+        if (document.activeElement.id === "close-icon-container") {
+          lastFocusableElt.focus();
+          e.preventDefault();
+        }
+      } else {
+        if (document.activeElement.id === "next") {
+          firstFocusableElt.focus();
+          e.preventDefault();
+        }
+      }
     }
   }
 
