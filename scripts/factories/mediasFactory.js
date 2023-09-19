@@ -36,7 +36,6 @@ function mediaTemplate(media, photographer, mediasList) {
   }
 
   function openOnEnter(e) {
-    console.log(`openOnEnter`);
     if (e.key === "Enter") {
       openLightbox(media);
     }
@@ -132,7 +131,6 @@ function mediaTemplate(media, photographer, mediasList) {
    * Get previous media index to find the media to show, then call showMedia function
    */
   function showPreviousMedia() {
-    console.log(`ni là ! ?`);
     const previousIndex =
       currentIndex === 0 ? mediasList.length - 1 : currentIndex - 1;
     const previousMedia = mediasList[previousIndex];
@@ -284,7 +282,6 @@ function mediaTemplate(media, photographer, mediasList) {
    * Action on open lightbox
    */
   function openLightbox() {
-    console.log(`openLightbox`);
     isLightboxOpened = true;
     lightboxModal.classList.remove("hidden");
     handleLightboxAriaHidden();
@@ -297,10 +294,6 @@ function mediaTemplate(media, photographer, mediasList) {
     showMedia(media);
     const closeIcon = document.getElementById("close-icon-container");
     closeIcon.focus();
-    focusableLightboxElts = [closeIcon];
-    focusableLightboxElts = focusableLightboxElts.concat(
-      Array.from(document.querySelectorAll("#next, #previous"))
-    );
   }
 
   /**
