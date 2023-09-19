@@ -133,9 +133,8 @@ function openContactModal(photographerData) {
   photographerNameElt.textContent = photographerData.name;
   formDatas.forEach((field) => (field.value = ""));
 
-  form.querySelectorAll(".form-data").forEach((elt) => {
-    delete elt.dataset.error;
-    delete elt.dataset.errorVisible;
+  form.querySelectorAll(".text-control").forEach((elt) => {
+    elt.removeAttribute("aria-invalid");
   });
 }
 
