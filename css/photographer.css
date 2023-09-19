@@ -404,7 +404,7 @@ form div {
 }
 
 form input,
-form span,
+/* form span, */
 form textarea {
   width: 100%;
   height: 68px;
@@ -429,7 +429,7 @@ form .contact_button {
   font-size: 20px;
   height: 48px;
 }
-.form-data[data-error]::after {
+/* .form-data[data-error]::after {
   content: attr(data-error);
   font-size: 1em;
   color: var(--primary-bg-color);
@@ -449,4 +449,23 @@ form .contact_button {
 }
 .form-data[data-error-visible="false"] .text-control {
   border: 2px solid #144d3d;
+} */
+
+.text-control[aria-invalid="true"] {
+  border: 2px solid var(--primary-bg-color);
+}
+.text-control[aria-invalid="false"] {
+  border: 2px solid #144d3d;
+}
+
+.error-text {
+  font-size: 1em;
+  color: var(--primary-bg-color);
+  display: block;
+  margin-top: 7px;
+  margin-bottom: 7px;
+  text-align: left;
+  line-height: 1;
+  /* opacity: 1; */
+  /* transition: 0.3s; */
 }

@@ -37,36 +37,19 @@
       <form id="contact_form" method="get" action="" novalidate>
         <div class="form-data">
           <label for="firstname">Prénom</label>
-          <span>
-            <input type="text" class="text-control" id="firstname" name="firstname" aria-describedby="firstname-format">
-            <span id="firstname-format" class="sr-only">Le prénom doit faire au moins 2 caractères et ne contenir que
-              des lettres, tiret ou
-              espace.</span>
-          </span>
+          <input type="text" class="text-control" id="firstname" name="firstname">
         </div>
         <div class="form-data">
           <label for="lastname">Nom</label>
-          <span>
-            <input type="text" class="text-control" id="lastname" name="lastname" aria-describedby="lastname-format">
-            <span id="lastname-format" class="sr-only">Le nom doit faire au moins 2 caractères et ne contenir que des
-              lettres, tiret ou
-              espace.</span>
-          </span>
+          <input type="text" class="text-control" id="lastname" name="lastname">
         </div>
         <div class="form-data">
-          <label id="email" for="mail">Email</label>
-          <span>
-            <input type="email" id="mail" class="text-control" name="mail" aria-labelledby="email"
-              aria-describedby="email-format">
-            <span id="email-format" class="sr-only">Format XXX@XXX.XX</span>
-          </span>
+          <label for="mail">Email</label>
+          <input type="email" id="mail" class="text-control" name="mail">
         </div>
         <div class="form-data">
           <label for="message">Votre message</label>
-          <span>
-            <textarea id="message" class="text-control" name="message" aria-describedby="message-format"></textarea>
-            <span id="message-format" class="sr-only">Le message doit faire au moins 2 caractères</span>
-          </span>
+          <textarea id="message" class="text-control" name="message"></textarea>
         </div>
         <button class="contact_button">Envoyer</button>
       </form>
