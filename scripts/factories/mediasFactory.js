@@ -24,7 +24,7 @@ function mediaTemplate(media, photographer, mediasList) {
     const mediaElt = media.image ? createImage() : createVideo();
     mediaElt.classList.add("media");
     mediaElt.tabIndex = 0;
-    mediaElt.addEventListener("keyup", openOnEnter);
+    mediaElt.addEventListener("keydown", openOnEnter);
     mediaElt.addEventListener("click", openLightbox);
 
     const mediaTitleAndLikeContainer = createMediaTitleAndLikeContainer();
@@ -36,7 +36,6 @@ function mediaTemplate(media, photographer, mediasList) {
   }
 
   function openOnEnter(e) {
-    console.log(`openOnEnter`);
     if (e.key === "Enter") {
       openLightbox(media);
     }
@@ -55,6 +54,10 @@ function mediaTemplate(media, photographer, mediasList) {
     video.src = mediaSrc;
     video.ariaLabel = media.title;
     video.controls = withControls;
+
+    if (withControls) {
+      video.tabIndex = 3;
+    }
 
     return video;
   }
@@ -128,7 +131,6 @@ function mediaTemplate(media, photographer, mediasList) {
    * Get previous media index to find the media to show, then call showMedia function
    */
   function showPreviousMedia() {
-    console.log(`ni là ! ?`);
     const previousIndex =
       currentIndex === 0 ? mediasList.length - 1 : currentIndex - 1;
     const previousMedia = mediasList[previousIndex];
@@ -143,7 +145,6 @@ function mediaTemplate(media, photographer, mediasList) {
    * Get next media index to find the media to show, then call showMedia function
    */
   function showNextMedia() {
-    console.log(`je repasse pas là hein ?`);
     const nextIndex =
       currentIndex === mediasList.length - 1 ? 0 : currentIndex + 1;
     const nextMedia = mediasList[nextIndex];
@@ -180,7 +181,9 @@ function mediaTemplate(media, photographer, mediasList) {
     likeCountContainer.classList.add("like_count_container");
     likeCount.textContent = media.likes;
     icon.className += "fa-solid fa-heart";
+    icon.tabIndex = 0;
     icon.addEventListener("click", incrementLikesEvent);
+    icon.addEventListener("keyup", handleKeyUp);
 
     likeCountContainer.appendChild(likeCount);
     likeCountContainer.appendChild(icon);
@@ -189,6 +192,14 @@ function mediaTemplate(media, photographer, mediasList) {
     div.appendChild(likeCountContainer);
 
     return div;
+  }
+
+  function handleKeyUp(e) {
+    const keyCode = e.key;
+
+    if (keyCode === "Enter") {
+      incrementLikesEvent();
+    }
   }
 
   /**
@@ -237,7 +248,7 @@ function mediaTemplate(media, photographer, mediasList) {
     const nextBtn = document.createElement("button");
     nextBtn.id = "next";
     nextBtn.classList.add("btn");
-    nextBtn.tabIndex = 3;
+    nextBtn.tabIndex = 4;
     const btnIcon = document.createElement("span");
     btnIcon.className = "fa-solid fa-chevron-right fa-2xl";
     btnIcon.ariaHidden = true;
@@ -281,21 +292,18 @@ function mediaTemplate(media, photographer, mediasList) {
    * Action on open lightbox
    */
   function openLightbox() {
-    console.log(`openLightbox`);
     isLightboxOpened = true;
     lightboxModal.classList.remove("hidden");
     handleLightboxAriaHidden();
 
+    const selectedMedia =
+      document.querySelector(`img[src='${mediaSrc}'`) ??
+      document.querySelector(`video[src='${mediaSrc}']`);
+    selectedMedia.removeEventListener("keydown", openOnEnter);
+    lightboxModal.addEventListener("keydown", handleKeydown);
     showMedia(media);
     const closeIcon = document.getElementById("close-icon-container");
     closeIcon.focus();
-    focusableLightboxElts = [closeIcon];
-    focusableLightboxElts = focusableLightboxElts.concat(
-      Array.from(document.querySelectorAll("#next, #previous"))
-    );
-    console.log(`focusableElts`, focusableLightboxElts);
-    // document.addEventListener("keyup", handleKeyUp);
-    trapFocusInLightbox();
   }
 
   /**
@@ -306,28 +314,17 @@ function mediaTemplate(media, photographer, mediasList) {
     lightboxModal.classList.add("hidden");
     handleLightboxAriaHidden();
 
-    // document.removeEventListener("keyup", handleKeyUp);
     lightboxModal.removeEventListener("keydown", handleKeydown);
+
     fromBody = true;
     // On close, on redonne le focus à l'image liée au currentIndex
     const selectedMedia = document.querySelector(`img[src='${mediaSrc}'`);
+    selectedMedia.addEventListener("keydown", openOnEnter);
     selectedMedia.focus();
-  }
-
-  function trapFocusInLightbox() {
-    document.addEventListener("keydown", handleKeydown);
   }
 
   function handleKeydown(e) {
     const keyCode = e.key;
-    console.log(`iciiiiii ?`);
-    const firstFocusableElt = focusableLightboxElts[0];
-    const lastFocusableElt =
-      focusableLightboxElts[focusableLightboxElts.length - 1];
-    currentEltIndex = focusableLightboxElts.findIndex(
-      (elt) => elt === document.activeElement
-    );
-    // const dropdownElt = document.querySelector('.dropdown_list');
 
     if (
       keyCode === "Escape" ||
@@ -335,119 +332,20 @@ function mediaTemplate(media, photographer, mediasList) {
         keyCode === "Enter")
     ) {
       closeLightbox();
+      e.preventDefault();
     } else if (e.key === "Enter") {
+      e.preventDefault();
       if (document.activeElement.id === "previous") {
         showPreviousMedia();
       } else if (document.activeElement.id === "next") {
         showNextMedia();
       }
     } else if (keyCode === "ArrowLeft") {
-      e.preventDefault();
-      focusableLightboxElts[1].focus();
       showPreviousMedia();
-    } else if (keyCode === "ArrowRight") {
       e.preventDefault();
-      focusableLightboxElts[2].focus();
+    } else if (keyCode === "ArrowRight") {
       showNextMedia();
-    } else if (keyCode === "Tab") {
-      if (e.shiftKey) {
-        if (document.activeElement.id === "close-icon-container") {
-          lastFocusableElt.focus();
-          e.preventDefault();
-        }
-      } else {
-        if (document.activeElement.id === "next") {
-          firstFocusableElt.focus();
-          e.preventDefault();
-        }
-      }
-    }
-  }
-
-  function handleKeyDown(e) {
-    const keyCode = e.key;
-    console.log(`keycode ici ???`, keyCode);
-    const firstFocusableElt = focusableLightboxElts[0];
-    const lastFocusableElt =
-      focusableLightboxElts[focusableLightboxElts.length - 1];
-    currentEltIndex = focusableLightboxElts.findIndex(
-      (elt) => elt === document.activeElement
-    );
-
-    if (isLightboxOpened && !fromBody) {
-      if (
-        keyCode === "Escape" ||
-        (document.activeElement.id === "close-icon-container" &&
-          keyCode === "Enter")
-      ) {
-        console.log(`escape sur enter ?`);
-        closeLightbox();
-        e.preventDefault();
-      } else if (keyCode === "ArrowLeft") {
-        console.log(`ici`);
-        showPreviousMedia();
-        // e.preventDefault();
-        // focusableLightboxElts[1].focus();
-      } else if (keyCode === "ArrowRight") {
-        console.log(`ou là`);
-        showNextMedia();
-        // e.preventDefault();
-        // focusableLightboxElts[2].focus();
-      } else if (keyCode === "Tab") {
-        console.log(`1`);
-        if (e.shiftKey) {
-          console.log(`if`);
-          if (document.activeElement.id === "close-icon-container") {
-            console.log(`3`);
-            lastFocusableElt.focus();
-            e.preventDefault();
-          }
-        } else {
-          console.log(`else`);
-          console.log(`document.activeElement`, document.activeElement);
-          console.log(`firstFocusable`, firstFocusableElt);
-          if (document.activeElement.id === "next") {
-            console.log(`4`, firstFocusableElt);
-            firstFocusableElt.focus();
-            e.preventDefault();
-          }
-        }
-      } else {
-        console.log(`sinon là ????`);
-      }
-    } else if (fromBody) {
-      fromBody = false;
-    }
-  }
-
-  /**
-   * Action on keyup
-   */
-  function handleKeyUp(e) {
-    const keyCode = e.key;
-    console.log(`mes arrow ??????`, keyCode);
-
-    const closeIconContainer = document.querySelector(".close_icon_container");
-    if (isLightboxOpened && !fromBody) {
-      if (
-        keyCode === "Escape" ||
-        (!fromBody &&
-          document.activeElement === closeIconContainer &&
-          keyCode === "Enter")
-      ) {
-        closeLightbox(e);
-        fromBody = true;
-      } else if (keyCode === "ArrowRight") {
-        showNextMedia();
-        // const nextButton = document.getElementById('next');
-        // nextButton.focus();
-      } else if (keyCode === "ArrowLeft") {
-        showPreviousMedia();
-        // const previousButton = document.getElementById('previous');
-        // previousButton.focus();
-      }
-    } else if (fromBody) {
-      fromBody = false;
+      e.preventDefault();
     }
   }
 

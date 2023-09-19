@@ -213,6 +213,13 @@ h3 {
   margin-top: 10px;
 }
 
+.media_title_and_like_container h3 {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  max-width: 80%;
+}
+
 .like_count_container {
   display: flex;
   align-items: center;
@@ -404,7 +411,6 @@ form div {
 }
 
 form input,
-form span,
 form textarea {
   width: 100%;
   height: 68px;
@@ -429,24 +435,21 @@ form .contact_button {
   font-size: 20px;
   height: 48px;
 }
-.form-data[data-error]::after {
-  content: attr(data-error);
+
+.text-control[aria-invalid="true"] {
+  border: 2px solid var(--primary-bg-color);
+}
+
+.text-control[aria-invalid="false"] {
+  border: 2px solid #144d3d;
+}
+
+.error-text {
   font-size: 1em;
   color: var(--primary-bg-color);
   display: block;
   margin-top: 7px;
   margin-bottom: 7px;
   text-align: left;
-  line-height: 0.3;
-  opacity: 0;
-  transition: 0.3s;
-}
-.form-data[data-error-visible="true"]::after {
-  opacity: 1;
-}
-.form-data[data-error-visible="true"] .text-control {
-  border: 2px solid var(--primary-bg-color);
-}
-.form-data[data-error-visible="false"] .text-control {
-  border: 2px solid #144d3d;
+  line-height: 1;
 }
