@@ -181,7 +181,9 @@ function mediaTemplate(media, photographer, mediasList) {
     likeCountContainer.classList.add("like_count_container");
     likeCount.textContent = media.likes;
     icon.className += "fa-solid fa-heart";
+    icon.tabIndex = 0;
     icon.addEventListener("click", incrementLikesEvent);
+    icon.addEventListener("keyup", handleKeyUp);
 
     likeCountContainer.appendChild(likeCount);
     likeCountContainer.appendChild(icon);
@@ -190,6 +192,14 @@ function mediaTemplate(media, photographer, mediasList) {
     div.appendChild(likeCountContainer);
 
     return div;
+  }
+
+  function handleKeyUp(e) {
+    const keyCode = e.key;
+
+    if (keyCode === "Enter") {
+      incrementLikesEvent();
+    }
   }
 
   /**
