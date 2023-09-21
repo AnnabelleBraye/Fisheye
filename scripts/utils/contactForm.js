@@ -135,6 +135,7 @@ function openContactModal(photographerData) {
 
   form.querySelectorAll(".text-control").forEach((elt) => {
     elt.removeAttribute("aria-invalid");
+    formDatas.forEach((elt) => removeError(elt));
   });
 }
 
@@ -181,13 +182,12 @@ function handleKeydown(e) {
     keyCode === "Escape" ||
     (document.activeElement === closeModalBtn && keyCode === "Enter")
   ) {
-    console.log(`je passe ici ???`);
+    e.preventDefault();
     closeContactModal();
   } else if (keyCode === "Enter") {
     e.preventDefault();
     validate(e);
   } else if (keyCode === "Tab") {
-    console.log(`Tab`);
     if (e.shiftKey) {
       if (document.activeElement === firstFocusableElt) {
         lastFocusableElt.focus();
