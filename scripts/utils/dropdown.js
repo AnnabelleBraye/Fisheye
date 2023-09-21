@@ -183,12 +183,12 @@ function toggleIsOpenedAndHidden() {
 
   if (dropdownElt.classList.contains("hidden")) {
     window.removeEventListener("click", closeDropdown);
+    dropdownContainer.removeEventListener("keydown", handleKeydownOnDropdown);
   } else {
     const options = document.querySelectorAll(".dropdown_option_container");
     options.forEach((opt) => {
       opt.tabIndex = 0;
     });
-    // ajouter aussi option sur le bouton, ou au moins le label
   }
 }
 
@@ -242,8 +242,11 @@ function handleKeydownOnDropdown(e) {
   if (keyCode === "Escape") {
     closeDropdown();
   } else if (e.key === "Enter") {
-    if (!dropdownElt.classList.contains("hidden")) {
-      const opt = document.activeElement.querySelector(".dropdown_option");
+    if (
+      !dropdownElt.classList.contains("hidden") &&
+      document.activeElement !== firstFocusableElt
+    ) {
+      const opt = e.currentTarget.querySelector(".dropdown_option");
       selectOpt(opt.dataset.value, opt.textContent);
       dropdownContainer.removeEventListener("keydown", handleKeydownOnDropdown);
     }

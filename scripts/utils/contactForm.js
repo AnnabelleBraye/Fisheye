@@ -141,8 +141,8 @@ function openContactModal(photographerData) {
 /**
  * Hide form modal
  */
-function closeContactModal(e) {
-  e.preventDefault();
+function closeContactModal() {
+  console.log(`j'passe pas là alors ?`);
   contactModal.removeEventListener("keydown", handleKeydown);
   contactModal.classList.toggle("hidden");
   handleAria();
@@ -155,7 +155,6 @@ function handleAria() {
     "aria-hidden",
     contactModal.getAttribute("aria-hidden") === "true" ? "false" : "true"
   );
-  bodyElt.querySelectorAll("not[contact_modal]");
   mainElt.setAttribute(
     "aria-hidden",
     mainElt.getAttribute("aria-hidden") === "true" ? "false" : "true"
@@ -173,6 +172,7 @@ function trapFocusInContactModal() {
 
 function handleKeydown(e) {
   const keyCode = e.key;
+  console.log(`keyCode`, keyCode);
   const firstFocusableElt = focusableContactModalElts[0];
   const lastFocusableElt =
     focusableContactModalElts[focusableContactModalElts.length - 1];
@@ -181,10 +181,13 @@ function handleKeydown(e) {
     keyCode === "Escape" ||
     (document.activeElement === closeModalBtn && keyCode === "Enter")
   ) {
-    closeContactModal(e);
+    console.log(`je passe ici ???`);
+    closeContactModal();
   } else if (keyCode === "Enter") {
+    e.preventDefault();
     validate(e);
   } else if (keyCode === "Tab") {
+    console.log(`Tab`);
     if (e.shiftKey) {
       if (document.activeElement === firstFocusableElt) {
         lastFocusableElt.focus();
