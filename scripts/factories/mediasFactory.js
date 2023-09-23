@@ -21,7 +21,7 @@ function mediaTemplate(media, photographer, mediasList) {
     mediaElt.classList.add('media');
     mediaElt.tabIndex = 0;
     mediaElt.addEventListener('keydown', openOnEnter);
-    mediaElt.addEventListener('click', openLightbox);
+    mediaElt.addEventListener('click', openLightboxWithMedia);
 
     const mediaTitleAndLikeContainer = createMediaTitleAndLikeContainer();
 
@@ -35,6 +35,10 @@ function mediaTemplate(media, photographer, mediasList) {
     if (e.key === 'Enter') {
       openLightbox(media);
     }
+  }
+
+  function openLightboxWithMedia() {
+    openLightbox(media);
   }
 
   function createImage() {
@@ -288,8 +292,8 @@ function mediaTemplate(media, photographer, mediasList) {
    * Action on open lightbox
    */
   function openLightbox(media) {
-    isLightboxOpened = true;
     lightboxModal.classList.remove('hidden');
+    lightboxModal.classList.add('flex');
     handleLightboxAriaHidden();
 
     const selectedMedia =
