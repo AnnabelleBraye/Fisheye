@@ -1,23 +1,23 @@
-const contactModal = document.getElementById("contact_modal");
-const form = document.getElementById("contact_form");
+const contactModal = document.getElementById('contact_modal');
+const form = document.getElementById('contact_form');
 const formDatas = document.querySelectorAll(
-  "#contact_form .form-data input, #contact_form .form-data textarea"
+  '#contact_form .form-data input, #contact_form .form-data textarea'
 );
-const closeModalBtn = document.querySelector(".contact_me_container img");
-const headerElt = document.querySelector("header[role=banner]");
-const bodyElt = document.querySelector("body");
+const closeModalBtn = document.querySelector('.contact_me_container img');
+const headerElt = document.querySelector('header[role=banner]');
+const bodyElt = document.querySelector('body');
 const focusableContactModalElts = Array.from(
   contactModal.querySelectorAll(
-    ".contact_me_container img, #contact_form .form_data input, #contact_form .form_data textarea, button"
+    '.contact_me_container img, #contact_form .form_data input, #contact_form .form_data textarea, button'
   )
 );
-let photographerName = "";
+let photographerName = '';
 
 // Call validate function on submit
-form.addEventListener("submit", validate);
+form.addEventListener('submit', validate);
 
 // Add close function on close modal btn
-closeModalBtn.addEventListener("click", (e) => closeContactModal(e));
+closeModalBtn.addEventListener('click', (e) => closeContactModal(e));
 
 function validate(event) {
   event.preventDefault();
@@ -56,30 +56,30 @@ function checkFieldsValidity() {
 
   const messageElt = form.message;
   let isMessageValid =
-    form.message.value.trim() !== "" && messageElt.value.length >= 2;
+    form.message.value.trim() !== '' && messageElt.value.length >= 2;
 
   if (!isFirstnameValid) {
     handleDataError(
       firstnameElt,
-      "Le prénom doit faire au moins 2 caractères, ne contenir que des lettres, avec espaces ou tirets."
+      'Le prénom doit faire au moins 2 caractères, ne contenir que des lettres, avec espaces ou tirets.'
     );
   } else {
     removeError(firstnameElt, true);
     if (!isLastnameValid) {
       handleDataError(
         lastnameElt,
-        "Le nom doit faire au moins 2 caractères, ne contenir que des lettres, avec espaces ou tirets."
+        'Le nom doit faire au moins 2 caractères, ne contenir que des lettres, avec espaces ou tirets.'
       );
     } else {
       removeError(lastnameElt, true);
       if (!isMailValid) {
-        handleDataError(mailElt, "Le mail doit être au format XXX@XXX.XX");
+        handleDataError(mailElt, 'Le mail doit être au format XXX@XXX.XX');
       } else {
         removeError(mailElt, true);
         if (!isMessageValid) {
           handleDataError(
             messageElt,
-            "Le message doit faire au moins 2 caractères."
+            'Le message doit faire au moins 2 caractères.'
           );
         } else {
           removeError(messageElt, true);
@@ -98,26 +98,26 @@ function checkFieldsValidity() {
  */
 function handleDataError(element, errorMsg) {
   removeError(element);
-  const spanError = document.createElement("span");
+  const spanError = document.createElement('span');
   spanError.id = `error-${element.name}`;
-  spanError.classList.add("error-text");
+  spanError.classList.add('error-text');
   spanError.textContent = errorMsg;
   element.parentElement.append(spanError);
   element.ariaInvalid = true;
-  element.setAttribute("aria-describedBy", spanError.id);
+  element.setAttribute('aria-describedBy', spanError.id);
 
   element.focus();
 }
 
 function removeError(element, isFieldValid) {
-  const child = element.parentElement.querySelector("span.error-text");
+  const child = element.parentElement.querySelector('span.error-text');
   if (child) {
     element.parentElement.removeChild(child);
   }
 
   if (isFieldValid) {
     element.ariaInvalid = false;
-    element.removeAttribute("aria-describedBy");
+    element.removeAttribute('aria-describedBy');
   }
 }
 
@@ -126,15 +126,15 @@ function removeError(element, isFieldValid) {
  */
 function openContactModal(photographerData) {
   trapFocusInContactModal();
-  contactModal.classList.remove("hidden");
+  contactModal.classList.remove('hidden');
   handleAria();
   closeModalBtn.focus();
-  const photographerNameElt = document.querySelector(".modal header > h2");
+  const photographerNameElt = document.querySelector('.modal header > h2');
   photographerNameElt.textContent = photographerData.name;
-  formDatas.forEach((field) => (field.value = ""));
+  formDatas.forEach((field) => (field.value = ''));
 
-  form.querySelectorAll(".text-control").forEach((elt) => {
-    elt.removeAttribute("aria-invalid");
+  form.querySelectorAll('.text-control').forEach((elt) => {
+    elt.removeAttribute('aria-invalid');
     formDatas.forEach((elt) => removeError(elt));
   });
 }
@@ -143,51 +143,49 @@ function openContactModal(photographerData) {
  * Hide form modal
  */
 function closeContactModal() {
-  console.log(`j'passe pas là alors ?`);
-  contactModal.removeEventListener("keydown", handleKeydown);
-  contactModal.classList.toggle("hidden");
+  contactModal.removeEventListener('keydown', handleKeydown);
+  contactModal.classList.toggle('hidden');
   handleAria();
-  const contactMeButton = document.querySelector(".contact_button");
+  const contactMeButton = document.querySelector('.contact_button');
   contactMeButton.focus();
 }
 
 function handleAria() {
   contactModal.setAttribute(
-    "aria-hidden",
-    contactModal.getAttribute("aria-hidden") === "true" ? "false" : "true"
+    'aria-hidden',
+    contactModal.getAttribute('aria-hidden') === 'true' ? 'false' : 'true'
   );
   mainElt.setAttribute(
-    "aria-hidden",
-    mainElt.getAttribute("aria-hidden") === "true" ? "false" : "true"
+    'aria-hidden',
+    mainElt.getAttribute('aria-hidden') === 'true' ? 'false' : 'true'
   );
   headerElt.setAttribute(
-    "aria-hidden",
-    headerElt.getAttribute("aria-hidden") === "true" ? "false" : "true"
+    'aria-hidden',
+    headerElt.getAttribute('aria-hidden') === 'true' ? 'false' : 'true'
   );
-  bodyElt.classList.toggle("no-scroll");
+  bodyElt.classList.toggle('no-scroll');
 }
 
 function trapFocusInContactModal() {
-  contactModal.addEventListener("keydown", handleKeydown);
+  contactModal.addEventListener('keydown', handleKeydown);
 }
 
 function handleKeydown(e) {
   const keyCode = e.key;
-  console.log(`keyCode`, keyCode);
   const firstFocusableElt = focusableContactModalElts[0];
   const lastFocusableElt =
     focusableContactModalElts[focusableContactModalElts.length - 1];
 
   if (
-    keyCode === "Escape" ||
-    (document.activeElement === closeModalBtn && keyCode === "Enter")
+    keyCode === 'Escape' ||
+    (document.activeElement === closeModalBtn && keyCode === 'Enter')
   ) {
     e.preventDefault();
     closeContactModal();
-  } else if (keyCode === "Enter") {
+  } else if (keyCode === 'Enter') {
     e.preventDefault();
     validate(e);
-  } else if (keyCode === "Tab") {
+  } else if (keyCode === 'Tab') {
     if (e.shiftKey) {
       if (document.activeElement === firstFocusableElt) {
         lastFocusableElt.focus();

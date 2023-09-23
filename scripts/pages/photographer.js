@@ -2,7 +2,6 @@ let mediasSorted = [];
 let currentFilter = 'likes';
 let currentPhotographer = null;
 const mainElt = document.querySelector('main');
-console.log(`mainElt`, mainElt);
 
 function displayData(photographer, medias) {
   mediasSorted = medias;
@@ -10,19 +9,23 @@ function displayData(photographer, medias) {
 
   const photographerDetails = displayPhotographerData();
 
-  const dropdownOptions = [{
-    value: 'likes',
-    text: 'Popularité',
-    isSelected: true
-  }, {
-    value: 'title',
-    text: 'Titre',
-    isSelected: false
-  }, {
-    value: 'date',
-    text: 'Date',
-    isSelected: false
-  }]
+  const dropdownOptions = [
+    {
+      value: 'likes',
+      text: 'Popularité',
+      isSelected: true,
+    },
+    {
+      value: 'title',
+      text: 'Titre',
+      isSelected: false,
+    },
+    {
+      value: 'date',
+      text: 'Date',
+      isSelected: false,
+    },
+  ];
   const sortedByContainer = createDropdown(dropdownOptions);
 
   const mediasContainer = document.createElement('section');
@@ -36,11 +39,13 @@ function displayData(photographer, medias) {
   mainElt.appendChild(photographerDetails);
   mainElt.appendChild(sortedByContainer);
   mainElt.appendChild(mediasContainer);
-
 }
 
 function displayPhotographerData() {
-  const photographerModel = photographerTemplate(currentPhotographer, mediasSorted);
+  const photographerModel = photographerTemplate(
+    currentPhotographer,
+    mediasSorted
+  );
   const photographerDetails = photographerModel.getPhotographerDetails();
 
   return photographerDetails;
@@ -55,7 +60,7 @@ function displayMedias(mediasContainer) {
 }
 
 async function init() {
-  const params =  new URL(document.location).searchParams;
+  const params = new URL(document.location).searchParams;
   const id = parseInt(params.get('id'));
 
   try {
