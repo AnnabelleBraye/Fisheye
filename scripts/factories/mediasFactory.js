@@ -156,18 +156,6 @@ function mediaTemplate(media, photographer, mediasList) {
   }
 
   /**
-   * Function which increment the likes number of a media,
-   * and increment the total of photographer's likes
-   * Remove event after click to avoid multiple click
-   */
-  function incrementLikesEvent() {
-    likeCount.textContent = parseInt(likeCount.textContent) + 1;
-    const totalLikesElt = document.querySelector('.likes_container p');
-    totalLikesElt.textContent = parseInt(totalLikesElt.textContent) + 1;
-    icon.removeEventListener('click', incrementLikesEvent);
-  }
-
-  /**
    * Create the container of media title and likes count
    * @returns div
    */
@@ -183,7 +171,7 @@ function mediaTemplate(media, photographer, mediasList) {
     icon.className += 'fa-solid fa-heart';
     icon.tabIndex = 0;
     icon.addEventListener('click', incrementLikesEvent);
-    icon.addEventListener('keydown', handleKeyUp);
+    icon.addEventListener('keydown', handleKeyDown);
 
     likeCountContainer.appendChild(likeCount);
     likeCountContainer.appendChild(icon);
@@ -194,7 +182,20 @@ function mediaTemplate(media, photographer, mediasList) {
     return div;
   }
 
-  function handleKeyUp(e) {
+  /**
+   * Function which increment the likes number of a media,
+   * and increment the total of photographer's likes
+   * Remove event after click to avoid multiple click
+   */
+  function incrementLikesEvent() {
+    likeCount.textContent = parseInt(likeCount.textContent) + 1;
+    const totalLikesElt = document.querySelector('.likes_container p');
+    totalLikesElt.textContent = parseInt(totalLikesElt.textContent) + 1;
+    icon.removeEventListener('click', incrementLikesEvent);
+    icon.removeEventListener('keydown', handleKeyDown);
+  }
+
+  function handleKeyDown(e) {
     const keyCode = e.key;
 
     if (keyCode === 'Enter') {
