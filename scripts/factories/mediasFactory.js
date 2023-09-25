@@ -170,6 +170,7 @@ function mediaTemplate(media, photographer, mediasList) {
     likeCount.textContent = media.likes;
     icon.className += 'fa-solid fa-heart';
     icon.tabIndex = 0;
+    icon.ariaLabel = 'Clicquez pour aimer la photo';
     icon.addEventListener('click', incrementLikesEvent);
     icon.addEventListener('keydown', handleKeyDown);
 
