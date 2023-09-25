@@ -87,7 +87,7 @@
 .dropdown_option_container {
   display: flex;
   align-items: center;
-  justify-content: baseline;
+  justify-content: start;
   cursor: default;
   width: 170px;
   font-size: 18px;
