@@ -1,5 +1,6 @@
 function photographerTemplate(photographerData, mediasData) {
-  const { id, name, portrait, city, country, tagline, price } = photographerData;
+  const { id, name, portrait, city, country, tagline, price } =
+    photographerData;
 
   const picture = `assets/photographers/${portrait}`;
   const url = `photographer.html?id=${id}`;
@@ -9,14 +10,14 @@ function photographerTemplate(photographerData, mediasData) {
    * @returns A photographers list element to detail one photograph
    */
   function getUserCardDOM() {
-    const article = document.createElement( 'article' );
+    const article = document.createElement('article');
 
     // Image and title photograph
     const imgLink = document.createElement('a');
     imgLink.href = url;
     imgLink.ariaLabel = name;
     const profilePicture = createProfilePicture(picture, name);
-    
+
     imgLink.appendChild(profilePicture);
 
     const h2 = document.createElement('h2');
@@ -36,7 +37,7 @@ function photographerTemplate(photographerData, mediasData) {
     article.appendChild(p);
     article.appendChild(span);
 
-    return (article);
+    return article;
   }
 
   function getPhotographerDetails() {
@@ -45,8 +46,13 @@ function photographerTemplate(photographerData, mediasData) {
     photographHeader.classList.add('photograph_header');
 
     // Create photographer informations div
-    const photographerInformations = createPhotographerInformations(name, city, country, tagline);
-    
+    const photographerInformations = createPhotographerInformations(
+      name,
+      city,
+      country,
+      tagline
+    );
+
     // Create contact button
     const buttonContainer = createContactButton(photographerData);
 
@@ -55,44 +61,43 @@ function photographerTemplate(photographerData, mediasData) {
 
     // Create likes sum and price container
     const likeAndPriceContainer = createLikeAndPrice(mediasData, price);
-    
+
     photographHeader.appendChild(photographerInformations);
     photographHeader.appendChild(buttonContainer);
     photographHeader.appendChild(photographImgContainer);
     photographHeader.appendChild(likeAndPriceContainer);
 
-    return photographHeader
+    return photographHeader;
   }
-
-  
 
   return {
     name,
     picture,
     getUserCardDOM,
-    getPhotographerDetails
-  }
+    getPhotographerDetails,
+  };
 }
 
 /**
  * Create a div which contains photographer informations
- * @param {*} name 
- * @param {*} city 
- * @param {*} country 
- * @param {*} tagline 
+ * @param {*} name
+ * @param {*} city
+ * @param {*} country
+ * @param {*} tagline
  * @returns div
  */
 function createPhotographerInformations(name, city, country, tagline) {
   const div = document.createElement('div');
-  const h2 = document.createElement( 'h2' );
-  h2.textContent = name;
-  const h3 = document.createElement('h3');
-  h3.textContent = `${city}, ${country}`;
+  const h1 = document.createElement('h1');
+  h1.classList.add('photographer_name');
+  h1.textContent = name;
+  const h2 = document.createElement('h2');
+  h2.textContent = `${city}, ${country}`;
   const p = document.createElement('p');
   p.textContent = tagline;
 
+  div.appendChild(h1);
   div.appendChild(h2);
-  div.appendChild(h3);
   div.appendChild(p);
 
   return div;
@@ -108,17 +113,19 @@ function createContactButton(photographerData) {
   const contactMeButton = document.createElement('button');
   contactMeButton.classList.add('contact_button');
   contactMeButton.textContent = 'Contactez-moi';
-  contactMeButton.addEventListener('click', () => openContactModal(photographerData));
+  contactMeButton.addEventListener('click', () =>
+    openContactModal(photographerData)
+  );
 
-  div.appendChild(contactMeButton)
+  div.appendChild(contactMeButton);
 
-  return div
+  return div;
 }
 
 /**
  * Create profile picture element
- * @param {*} picture 
- * @param {*} name 
+ * @param {*} picture
+ * @param {*} name
  * @returns div containing profile picture
  */
 function createProfilePicture(picture, name) {
@@ -136,11 +143,11 @@ function createProfilePicture(picture, name) {
 
 /**
  * Create div which contains photographer likes sum and his price
- * @param {*} mediasData 
- * @param {*} price 
+ * @param {*} mediasData
+ * @param {*} price
  * @returns div
  */
-function createLikeAndPrice(mediasData, price) {  
+function createLikeAndPrice(mediasData, price) {
   const totalLikes = getTotalLikes(mediasData);
 
   const div = document.createElement('div');
@@ -167,9 +174,9 @@ function createLikeAndPrice(mediasData, price) {
 
 /**
  * Count photographer likes sum
- * @param {*} medias 
+ * @param {*} medias
  * @returns Sum of likes
  */
 function getTotalLikes(medias) {
-  return likes = medias.reduce((acc, curr) => acc += curr.likes, 0);
+  return (likes = medias.reduce((acc, curr) => (acc += curr.likes), 0));
 }

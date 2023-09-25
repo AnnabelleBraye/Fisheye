@@ -18,13 +18,15 @@
 
 .dropdown_container {
   position: relative;
+  min-width: max-content;
 }
 
 .sort_btn {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  width: 170px;
+  min-width: 170px;
+  max-width: fit-content;
   padding: 20px 20px 14px 20px;
   background-color: var(--primary-bg-color);
   border-radius: 5px;
@@ -59,6 +61,7 @@
   transform-origin: top;
   animation: openDropdown 300ms both;
   z-index: 1;
+  width: 100%;
   border-bottom-left-radius: 5px;
   border-bottom-right-radius: 5px;
   background-color: var(--primary-bg-color);

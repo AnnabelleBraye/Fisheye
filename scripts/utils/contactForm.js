@@ -129,8 +129,15 @@ function openContactModal(photographerData) {
   contactModal.classList.remove('hidden');
   handleAria();
   closeModalBtn.focus();
-  const photographerNameElt = document.querySelector('.modal header > h2');
+  const modalTitle = document.querySelector('.modal header');
+  let photographerNameElt = document.querySelector('.modal header > h2');
+  if (!photographerNameElt) {
+    photographerNameElt = document.createElement('h2');
+  }
+  photographerNameElt.classList.add('modal_title');
   photographerNameElt.textContent = photographerData.name;
+  modalTitle.appendChild(photographerNameElt);
+
   formDatas.forEach((field) => (field.value = ''));
 
   form.querySelectorAll('.text-control').forEach((elt) => {

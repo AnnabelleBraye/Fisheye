@@ -27,7 +27,9 @@
   align-items: baseline;
 }
 
-.modal h2 {
+.modal_title {
+  font-size: 64px;
+  font-weight: 400;
   color: #000;
   margin: 0;
 }
