@@ -9,6 +9,10 @@
   --secondary-color: #901c1c;
 }
 
+* {
+  box-sizing: border-box;
+}
+
 /** 
   Tag CSS
 */
